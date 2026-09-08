@@ -1,32 +1,53 @@
-# Lab 1 — Configuração do Ambiente
+# Lab 1 — Environment Setup
 
-Template de partida para o **Lab 1** de Distributed Systems 2026/27.
+**Nome:** Gonçalo Gonçalves
+**Número de estudante:** a22405201
 
-Ao contrário dos templates seguintes, este está deliberadamente quase vazio. O Lab 1 é onde geras o teu primeiro projeto Spring Boot tu próprio, a partir do [start.spring.io](https://start.spring.io), e aprendes mais fazendo isso do que recebendo um já pronto.
+## Ambiente verificado
 
-## A usar este template
+```
+java -version
+openjdk version "25.0.4.1" 2026-08-18 LTS
+OpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)
+OpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)
+```
 
-Carrega em **Use this template → Create a new repository**. Dá-lhe o nome `lab-01-environment-setup-aXXXXXXXX`, por exemplo `lab-01-environment-setup-a20250123`. Em minúsculas, sem espaços, número de aluno com o `a` à frente — é a regra em toda a cadeira, e associamos repositórios a alunos pelo número.
+```
+./mvnw -version
+Apache Maven 3.9.16
+Java version: 25.0.4.1, vendor: Eclipse Adoptium
+```
 
-## O que vai aqui dentro
+```
+docker compose version
+Docker Compose version v2.39.4-desktop.1
+```
 
-Gera o projeto com as definições em
-[O teu primeiro projeto Spring Boot](https://github.com/DistributedSystems-Lusofona27/course-docs/blob/main/labs/lab-01-environment-setup/first-spring-boot-project.md)
-e faz commit dele para este repositório:
+## Como correr o serviço
 
-- Group `pt.ulusofona.cd`, artifact `hello-service`, package `pt.ulusofona.cd.hello`
-- Java 25, Spring Boot 4.1.0, Maven
-- Dependência: Spring Web
+```bash
+./mvnw spring-boot:run
+```
 
-A aplicação corre na porta 8080 e responde em `/hello`.
+A aplicação arranca na porta 8080.
 
-## Antes de entregares
+## Endpoints
 
-- [ ] `./mvnw clean package` tem sucesso a partir de um clone novo
-- [ ] `./mvnw spring-boot:run` arranca e `/hello` responde
-- [ ] A raiz do package é `pt.ulusofona.cd.hello` — não `com.example.*`
-- [ ] Mais do que um commit, com mensagens que dizem o que mudou
-- [ ] `target/` não está committed
+| Método | Caminho | Resposta |
+|---|---|---|
+| GET | `/hello` | `Hello from pt.ulusofona.cd` |
+| GET | `/actuator/health` | `{"status":"UP"}` |
 
-Os detalhes completos, incluindo como é avaliado, estão na página de
-[Entrega](https://github.com/DistributedSystems-Lusofona27/course-docs/blob/main/labs/lab-01-environment-setup/delivery.md).
+## Problemas encontrados
+
+O Docker Desktop não conseguia arrancar o daemon (`HCS_E_HYPERV_NOT_INSTALLED`), mesmo com a
+virtualização ativa na BIOS e as features do Windows (WSL2, Virtual Machine Platform) instaladas.
+A causa raiz foi o `hypervisorlaunchtype` estar definido como `Off` nas opções de arranque do
+Windows (`bcdedit`). Resolvido com:
+
+```powershell
+bcdedit /set hypervisorlaunchtype auto
+```
+
+seguido de reinício do PC.
+
