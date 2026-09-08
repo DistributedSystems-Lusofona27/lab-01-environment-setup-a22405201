@@ -1,0 +1,15 @@
+meta {
+  name: Get hello
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/hello
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
